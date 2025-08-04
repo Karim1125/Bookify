@@ -1,0 +1,76 @@
+﻿@model IEnumerable<AuthorViewModel>
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery
+
+@{
+    ViewData["Title"] = "Authors";
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/assets/plugins/datatables/datatables.bundle.css" />
+}
+
+<div class="alert bg-light-primary border border-primary border-3 border-dashed d-flex justify-content-between w-100 p-5 mb-10">
+    <div class="d-flex align-items-center">
+        <div class="symbol symbol-40px me-4">
+            <div class="symbol-label fs-2 fw-semibold text-success">
+                <!--begin::Svg Icon | path: icons/duotune/general/gen002.svg-->
+                <span class="svg-icon svg-icon-2 svg-icon-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                    </svg>
+                </span>
+                <!--end::Svg Icon-->
+            </div>
+        </div>
+        <!--begin::Content-->
+        <div class="d-flex flex-column pe-0 pe-sm-10">
+            <h5 class="mb-1">Authors</h5>
+        </div>
+        <!--end::Content-->
+    </div>
+    <div>
+        <a href="javascript:;" class="btn btn-sm btn-primary js-render-modal"
+           data-title="Add Author" data-url="/Authors/Create">
+            <i class="bi bi-plus-square-dotted"></i>
+            Add
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <partial name="_DataTablesCardHeader" />
+    <div class="card-body pt-0">
+        <div class="table-responsive">
+            <table class="table table-row-dashed table-row-gray-300 gy-7 js-datatables" data-document-title="Auhtors">
+                <thead>
+                    <tr class="fw-bold fs-6 text-gray-800">
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Created On</th>
+                        <th>Last Updated On</th>
+                        <th class="js-no-export">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var author in Model)
+                    {
+                        <partial name="_AuthorRow" model="@author" />
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" name="__RequestVerificationToken" value="@antiforgery.GetAndStoreTokens(Context).RequestToken" />
+
+@section Plugins
+{
+    <script src="~/assets/plugins/datatables/datatables.bundle.js"></script>
+}
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
