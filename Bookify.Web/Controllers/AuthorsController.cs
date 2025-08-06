@@ -97,7 +97,7 @@
             return Ok(category.LastUpdatedOn.ToString());
         }
 
-        public IActionResult AllowItem(CategoryFormViewModel model)
+        public IActionResult AllowItem(AuthorFormViewModel model)
         {
             var author = _context.Authors.SingleOrDefault(c => c.Name == model.Name);
             var isAllowed = author is null || author.Id.Equals(model.Id);
