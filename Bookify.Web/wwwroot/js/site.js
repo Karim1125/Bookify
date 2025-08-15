@@ -25,8 +25,12 @@ function showErrorMessage(message = 'Something went wrong!') {
     });
 }
 
-function onModalBegin() {
+function disableSubmitButton() {
     $('body :submit').attr('disabled', 'disabled').attr('data-kt-indicator', 'on');
+}
+
+function onModalBegin() {
+    disableSubmitButton();
 }
 
 function onModalSuccess(row) {
@@ -144,18 +148,38 @@ var KTDatatables = function () {
 }();
 
 $(document).ready(function () {
-    ////TinyMCE
-    var options = { selector: ".js-tinymce", height: "422" };
+    // Disable submit button
+    $('form').on('submit', function () {
+        if ($('.js-tinymce').length > 0) {
+            $('.js-tinymce').each(function () {
+                var input = $(this);
+                var content = tinymce.get(input.attr('id')).getContent();
+                input.val(content);
+            });
+        }
 
-    if (KTThemeMode.getMode() === "dark") {
-        options["skin"] = "oxide-dark";
-        options["content_css"] = "dark";
+
+        var isValid = $(this).valid();
+        if (isValid) disableSubmitButton();
+    });
+
+
+    //TinyMCE
+    if ($('.js-tinymce').length > 0) {
+        var options = { selector: ".js-tinymce", height: "430" };
+
+        if (KTThemeMode.getMode() === "dark") {
+            options["skin"] = "oxide-dark";
+            options["content_css"] = "dark";
+        }
+        tinymce.init(options);
     }
-
-    tinymce.init(options);
 
     //Select2
     $('.js-select2').select2();
+    $('.js-select2').on('select2:select', function (e) {
+        $('form').validate().element('#' + $(this).attr('id'));
+    });
 
     //Datepicker
     $('.js-datepicker').daterangepicker({
