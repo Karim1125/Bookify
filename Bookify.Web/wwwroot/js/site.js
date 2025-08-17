@@ -1,4 +1,5 @@
-﻿var table;
+﻿
+var table;
 var datatable;
 var updatedRow;
 var exportedCols = [];
@@ -157,8 +158,6 @@ $(document).ready(function () {
                 input.val(content);
             });
         }
-
-
         var isValid = $(this).valid();
         if (isValid) disableSubmitButton();
     });
